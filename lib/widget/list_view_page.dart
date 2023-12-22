@@ -25,7 +25,7 @@ class _ListViewPageState extends State<ListViewPage> {
   @override
   void initState() {
     super.initState();
-    getUserList();
+    init();
     _scrollController.addListener(_scrollListener);
   }
 
@@ -37,11 +37,15 @@ class _ListViewPageState extends State<ListViewPage> {
     super.dispose();
   }
 
-  void _scrollListener() {
+  init() async {
+    await getUserList();
+  }
+
+  _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       page++;
-      getUserList();
+      init();
     }
   }
 
@@ -49,9 +53,10 @@ class _ListViewPageState extends State<ListViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("List View Page"),
+        title: const Text("List View Page Build 4"),
       ),
       body: Obx(() {
+        if(userList.isEmpty) return Center(child: Text("No data"),);
         return ListView.builder(
           controller: _scrollController,
           itemCount: userList.length,
